@@ -1,3 +1,10 @@
+//pines alimentación
+#define vccpir 1
+#define vccultr 2
+#define vccservo 3 
+#define vccblue 4
+
+
 //Servo
 #include <Servo.h> 
 Servo myservo;  // create servo object to control a servo 
@@ -19,8 +26,8 @@ int minimumRange = 0; // Minimum range needed
 long duration, distance; // Duration used to calculate distance
 int pirState = LOW; //
 int val = 0;                    // variable for reading the pin status
-boolean ultrasonic;
-boolean servo;
+boolean ultrasonic = true ;
+boolean servo = true;
 int estado = 0;
 
 
@@ -33,6 +40,25 @@ void setup() {
 }
 
 void loop() {
+   if (ultrasonic) digitalWrite(vccultr, HIGH);
+   if (servo)digitalWrite(vccservo, HIGH);
+   digitalWrite(vccblue, HIGH);
+   digitalWrite(vccpir, HIGH);
+
+
+
+  if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
+  {
+    if (BT.read()==0) ultrasonic=true ;
+    if (BT.read()==1) ultrasonic=false;
+    if (BT.read()==2) servo=true;
+    if (BT.read()==3) servo =false;
+    if (BT.read()==4) BT.write(4);
+  }
+      
+
+
+  
   //String bluetooth = BT.read();
 
   //Ultrasonico
@@ -42,7 +68,7 @@ void loop() {
  digitalWrite(trigPin, LOW); 
  delayMicroseconds(2); 
 
- digitalWrite(trigPin, HIGH);
+
  delayMicroseconds(10); 
  
  digitalWrite(trigPin, LOW);
@@ -79,5 +105,8 @@ void loop() {
  }
 
  //bluetooth
- 
+
+
+    if (estado==1) BT.write(1);
+    if (estado==2) BT.write(2);
 }
