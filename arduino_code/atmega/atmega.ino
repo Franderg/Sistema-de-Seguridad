@@ -32,8 +32,13 @@ int estado = 0;
 
 
 void setup() {
+ BT.begin(9600);
  Serial.begin (9600);
  pinMode(trigPin, OUTPUT);
+ pinMode(vccultr, OUTPUT);
+ pinMode(vccservo, OUTPUT);
+ pinMode(vccblue, OUTPUT);
+ pinMode(vccpir, OUTPUT);
  pinMode(echoPin, INPUT);
  pinMode(pirPin, INPUT);     // declare sensor as input
  myservo.attach(8);
@@ -46,17 +51,16 @@ void loop() {
    digitalWrite(vccpir, HIGH);
 
 
-
   if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
   {
-    if (BT.read()==0) ultrasonic=true ;
-    if (BT.read()==1) ultrasonic=false;
-    if (BT.read()==2) servo=true;
-    if (BT.read()==3) servo =false;
+    Serial.print(BT.read());
+    if (BT.read()==0) {ultrasonic=true;}
+    if (BT.read()==1) {ultrasonic=false;}
+    if (BT.read()==2) {servo=true;}
+    if (BT.read()==3) {servo =false;}
     if (BT.read()==4) BT.write(4);
   }
       
-
 
   
   //String bluetooth = BT.read();
@@ -65,6 +69,7 @@ void loop() {
   
 /* The following trigPin/echoPin cycle is used to determine the
  distance of the nearest object by bouncing soundwaves off of it. */ 
+/*
  digitalWrite(trigPin, LOW); 
  delayMicroseconds(2); 
 
@@ -106,7 +111,7 @@ void loop() {
 
  //bluetooth
 
-
+*/
     if (estado==1) BT.write(1);
     if (estado==2) BT.write(2);
 }
