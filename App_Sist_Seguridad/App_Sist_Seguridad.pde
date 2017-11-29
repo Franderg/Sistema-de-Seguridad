@@ -13,7 +13,7 @@ PImage img3,img4,img5;
 PImage img10,img11;                                  //Se instancian las imagenes que se ocuparan para la interfaz
 String curr_time,curr_date,filename,row_data;        //Se instancian los strings necesarios para la fecha, hora y el archivo de texto.
 int inString;
-int valueAlert =0;                                        //Variable de entrada
+int valueAlert =3;                                        //Variable de entrada
 PrintWriter output;                                  //Variable para escritura de log.
 PFont font;                                          //Variable predeterminada de la interfaz
 boolean archivo = false;                             // Booleano exclusivo para crear el archivo que servira de registro en la aplicación
@@ -35,7 +35,7 @@ void setup(){
   img10= loadImage("Detector2.png");
   img11= loadImage("Ultrasonico2.png");
   font = loadFont("ARBERKLEY-36.vlw");        //Se carga la fuente predeterminada del programa.
-  port = new Serial(this, "COM9", 9600);      //Se carga un nuevo puerto serial
+  port = new Serial(this, "COM6", 9600);      //Se carga un nuevo puerto serial
 }
 
 void draw(){
@@ -145,8 +145,8 @@ void draw(){
       this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
     }else if ((inString ==3 || inString == 51)&&inString!=-1){
       valueAlert =3;
-      image(img4,175,125);                                      //Si el mensaje de Alerta es verde
-      row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
+      image(img5,175,125);                                      //Si el mensaje de Alerta es verde
+      row_data = curr_date + "  " + curr_time + "Alerta verde";                         //Se arma el string que se guardara en el archivo de texto.
       this.output.println(this.row_data);  
     }else
       if(inString==-1){
