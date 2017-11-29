@@ -29,6 +29,7 @@ int val = 0;                    // variable for reading the pin status
 boolean ultrasonic = true ;
 boolean servo = true;
 int estado = 0;
+int preestado =0;
 
 
 void setup() {
@@ -112,6 +113,7 @@ void loop() {
  //bluetooth
 
 */
-    if (estado==1) BT.write(1);
-    if (estado==2) BT.write(2);
+    if (estado==0) if  (estado!=preestado) BT.write(3);
+    if (estado==1) if (estado!=preestado) BT.write(1);
+    if (estado==2) if (estado!=preestado) BT.write(2);
 }
