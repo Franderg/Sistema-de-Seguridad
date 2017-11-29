@@ -16,8 +16,8 @@ int inString;                                        //Variable de entrada
 PrintWriter output;                                  //Variable para escritura de log.
 PFont font;                                          //Variable predeterminada de la interfaz
 boolean archivo = false;                             // Booleano exclusivo para crear el archivo que servira de registro en la aplicación
-boolean sensor1 = false;
-boolean sensor2 = false;
+boolean sensor1 = true;
+boolean sensor2 = true;
 void setup(){
   size(450,500);                                     //Se establece el tamaño de la pantalla.
   background(255,255,255);                           //Se pinta la pantalla en blanco para cada actualizacion.
@@ -34,7 +34,7 @@ void setup(){
   img10= loadImage("Detector2.png");
   img11= loadImage("Ultrasonico2.png");
   font = loadFont("ARBERKLEY-36.vlw");        //Se carga la fuente predeterminada del programa.
-  //port = new Serial(this, "COM4", 9600);      //Se carga un nuevo puerto serial
+  port = new Serial(this, "COM9", 9600);      //Se carga un nuevo puerto serial
 }
 
 void draw(){
@@ -67,10 +67,10 @@ void draw(){
       if(mouseX>40 && mouseX <40+100 && mouseY>150 && mouseY <150+100){  //Condicional para el boton del sensor 1
        println("Presionaste el boton del sensor uno");
        if (!sensor1){
-         //port.write('3');      //Desactiva el servo
+         port.write('3');      //Desactiva el servo
        }
        else{
-         //port.write('2');     //Activa el servo
+         port.write('2');     //Activa el servo
        }
        sensor1 = !sensor1;
        fill(0);
@@ -78,10 +78,10 @@ void draw(){
       if(mouseX>40 && mouseX <40+100 && mouseY>285 && mouseY <285+100){  //Condicional para el sensor 2
        println("Presionaste el boton del sensor dos");
        if (!sensor2){
-         //port.write('1');      //Desactiva el ultrasonico
+         port.write('1');      //Desactiva el ultrasonico
        }
        else{
-         //port.write('0');     //Activa el ultrasonico
+         port.write('0');     //Activa el ultrasonico
        }
        sensor2 = !sensor2;
        fill(0); 
@@ -94,12 +94,11 @@ void draw(){
       if(mouseX>235 && mouseX <235+170 && mouseY>400 && mouseY <400+70){ //Condicional para verificar conexion con el bluetooth
        println("Presionaste el boton de verificar conexion");
        image(img9,235,400);
-       //port.write('v');                                                                           //Se manda un mensaje de comprobacion de la conexion
-       //inString = port.read();                                                                   //Se recibe un mensaje de comprobacion de la conexion
-       inString = 10;
+       port.write('4');                                                                           //Se manda un mensaje de comprobacion de la conexion
+       inString = port.read();                                                                   //Se recibe un mensaje de comprobacion de la conexion
        if (inString!=-1){
           javax.swing.JOptionPane.showMessageDialog ( null, "Conexion exitosa","Estado de la Conexion", javax.swing.JOptionPane.INFORMATION_MESSAGE  );
-       }else{
+       }else if(inString==4 ||inString==52){
          javax.swing.JOptionPane.showMessageDialog ( null, "Error de conexion","Estado de la Conexion", javax.swing.JOptionPane.INFORMATION_MESSAGE  );
        }
        fill(0);
@@ -129,17 +128,19 @@ void draw(){
     archivo=true;
   }
   
-  inString = 15;//port.read();
-  if (inString ==20){          //Si el mensaje de alerta es amarillo
+  inString = port.read();
+  if (inString!=-1) println(inString);
+  if ((inString ==1 || inString == 49)&&inString!=-1){          //Si el mensaje de alerta es amarillo
+ 
     image(img4,175,125);
     row_data = curr_date + "  " + curr_time + "Alerta amarilla";     //Se arma el string que se guardara en el archivo de texto.
     this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
   }else 
-    if (inString ==30){       //Si el mensaje de alerta es rojo
+    if ((inString ==2 || inString == 50)&&inString!=-1){       //Si el mensaje de alerta es rojo
       image(img3,175,125);    
       row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
       this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
-    }else{
+    }else if(inString!=-1){
      image(img5,175,125);
      }
   output.flush();   //Se escribe todo lo almacenado en el archivo de texto.
