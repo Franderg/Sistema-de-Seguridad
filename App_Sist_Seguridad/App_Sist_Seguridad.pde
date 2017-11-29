@@ -12,7 +12,8 @@ PImage img1,img2,img6,img7,img8,img9; //Se instancian las imagenes que se ocupar
 PImage img3,img4,img5;
 PImage img10,img11;                                  //Se instancian las imagenes que se ocuparan para la interfaz
 String curr_time,curr_date,filename,row_data;        //Se instancian los strings necesarios para la fecha, hora y el archivo de texto.
-int inString;                                        //Variable de entrada
+int inString;
+int valueAlert =0;                                        //Variable de entrada
 PrintWriter output;                                  //Variable para escritura de log.
 PFont font;                                          //Variable predeterminada de la interfaz
 boolean archivo = false;                             // Booleano exclusivo para crear el archivo que servira de registro en la aplicación
@@ -34,7 +35,7 @@ void setup(){
   img10= loadImage("Detector2.png");
   img11= loadImage("Ultrasonico2.png");
   font = loadFont("ARBERKLEY-36.vlw");        //Se carga la fuente predeterminada del programa.
-  port = new Serial(this, "COM9", 9600);      //Se carga un nuevo puerto serial
+  port = new Serial(this, "COM6", 9600);      //Se carga un nuevo puerto serial
 }
 
 void draw(){
@@ -128,21 +129,38 @@ void draw(){
     archivo=true;
   }
   
+  
   inString = port.read();
-  if (inString!=-1) println(inString);
   if ((inString ==1 || inString == 49)&&inString!=-1){          //Si el mensaje de alerta es amarillo
- 
+    valueAlert =1;
     image(img4,175,125);
     row_data = curr_date + "  " + curr_time + "Alerta amarilla";     //Se arma el string que se guardara en el archivo de texto.
     this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
   }else 
     if ((inString ==2 || inString == 50)&&inString!=-1){       //Si el mensaje de alerta es rojo
+      valueAlert =2;
       image(img3,175,125);    
       row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
       this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
-    }else if(inString!=-1){
-     image(img5,175,125);
-     }
+    }else if ((inString ==0 || inString == 48)&&inString!=-1){
+      valueAlert =0;
+      image(img4,175,125);                                      //Si el mensaje de Alerta es verde
+      row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
+      this.output.println(this.row_data);  
+    }else
+      if(inString==-1){
+        if (valueAlert ==0){ //Alerta en verde
+          image(img5,175,125);
+        }else 
+          if(valueAlert ==1){ //Alerta en amarillo
+            image(img4,175,125);
+          }
+          else 
+            if(valueAlert ==2){  //Alerta en rojo
+              image(img3,175,125);
+            }  
+       }
+       
   output.flush();   //Se escribe todo lo almacenado en el archivo de texto.
   output.close();
 }
