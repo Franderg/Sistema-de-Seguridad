@@ -55,10 +55,10 @@ void loop() {
   if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
   {
     Serial.print(BT.read());
-    if (BT.read()==0) {ultrasonic=true;}
-    if (BT.read()==1) {ultrasonic=false;}
-    if (BT.read()==2) {servo=true;}
-    if (BT.read()==3) {servo =false;}
+    if (BT.read()==0) {ultrasonic=true; BT.write(5);}
+    if (BT.read()==1) {ultrasonic=false; BT.write(5);}
+    if (BT.read()==2) {servo=true; BT.write(5);}
+    if (BT.read()==3) {servo =false; BT.write(5);}
     if (BT.read()==4) BT.write(4);
   }
       

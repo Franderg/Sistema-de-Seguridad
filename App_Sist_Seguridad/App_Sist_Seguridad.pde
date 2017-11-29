@@ -35,7 +35,7 @@ void setup(){
   img10= loadImage("Detector2.png");
   img11= loadImage("Ultrasonico2.png");
   font = loadFont("ARBERKLEY-36.vlw");        //Se carga la fuente predeterminada del programa.
-  port = new Serial(this, "COM6", 9600);      //Se carga un nuevo puerto serial
+  port = new Serial(this, "COM9", 9600);      //Se carga un nuevo puerto serial
 }
 
 void draw(){
@@ -73,7 +73,8 @@ void draw(){
        else{
          port.write('2');     //Activa el servo
        }
-       sensor1 = !sensor1;
+       if (port.read()==10||port.read()==53)
+         sensor1 = !sensor1;
        fill(0);
       }
       if(mouseX>40 && mouseX <40+100 && mouseY>285 && mouseY <285+100){  //Condicional para el sensor 2
@@ -84,7 +85,8 @@ void draw(){
        else{
          port.write('0');     //Activa el ultrasonico
        }
-       sensor2 = !sensor2;
+       if (port.read()==10||port.read()==53)
+         sensor2 = !sensor2;
        fill(0); 
       }
       if(mouseX>40 && mouseX <40+170 && mouseY>400 && mouseY <400+70){  //Condicional para ver el reporte de alarmas.
