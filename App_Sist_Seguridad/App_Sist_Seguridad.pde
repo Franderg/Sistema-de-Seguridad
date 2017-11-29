@@ -136,18 +136,18 @@ void draw(){
     valueAlert =1;
     image(img4,175,125);
     row_data = curr_date + "  " + curr_time + "Alerta amarilla";     //Se arma el string que se guardara en el archivo de texto.
-    this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
+    this.output.println(this.row_data); 
+    output.flush();//Se graba el contenido en el archivo ".txt"
   }else 
     if ((inString ==2 || inString == 50)&&inString!=-1){       //Si el mensaje de alerta es rojo
       valueAlert =2;
       image(img3,175,125);    
       row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
-      this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
+      this.output.println(this.row_data);
+      output.flush();//Se graba el contenido en el archivo ".txt"
     }else if ((inString ==3 || inString == 51)&&inString!=-1){
       valueAlert =3;
-      image(img5,175,125);                                      //Si el mensaje de Alerta es verde
-      row_data = curr_date + "  " + curr_time + "Alerta verde";                         //Se arma el string que se guardara en el archivo de texto.
-      this.output.println(this.row_data);  
+      image(img5,175,125);                                      //Si el mensaje de Alerta es verde 
     }else
       if(inString==-1){
         if (valueAlert ==3){ //Alerta en verde
