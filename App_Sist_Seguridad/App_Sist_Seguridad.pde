@@ -35,7 +35,7 @@ void setup(){
   img10= loadImage("Detector2.png");
   img11= loadImage("Ultrasonico2.png");
   font = loadFont("ARBERKLEY-36.vlw");        //Se carga la fuente predeterminada del programa.
-  port = new Serial(this, "COM6", 9600);      //Se carga un nuevo puerto serial
+  port = new Serial(this, "COM9", 9600);      //Se carga un nuevo puerto serial
 }
 
 void draw(){
@@ -131,6 +131,7 @@ void draw(){
   
   
   inString = port.read();
+  if(inString!=-1) println(inString);
   if ((inString ==1 || inString == 49)&&inString!=-1){          //Si el mensaje de alerta es amarillo
     valueAlert =1;
     image(img4,175,125);
@@ -142,14 +143,14 @@ void draw(){
       image(img3,175,125);    
       row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
       this.output.println(this.row_data);                              //Se graba el contenido en el archivo ".txt"
-    }else if ((inString ==0 || inString == 48)&&inString!=-1){
-      valueAlert =0;
+    }else if ((inString ==3 || inString == 51)&&inString!=-1){
+      valueAlert =3;
       image(img4,175,125);                                      //Si el mensaje de Alerta es verde
       row_data = curr_date + "  " + curr_time + "Alerta roja";                         //Se arma el string que se guardara en el archivo de texto.
       this.output.println(this.row_data);  
     }else
       if(inString==-1){
-        if (valueAlert ==0){ //Alerta en verde
+        if (valueAlert ==3){ //Alerta en verde
           image(img5,175,125);
         }else 
           if(valueAlert ==1){ //Alerta en amarillo

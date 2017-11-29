@@ -113,7 +113,7 @@ void loop() {
  //bluetooth
 
 */
-    if (estado==0) if  (estado!=preestado) BT.write(3);
+    if (estado==0) BT.write(3);
     if (estado==1) if (estado!=preestado) BT.write(1);
     if (estado==2) if (estado!=preestado) BT.write(2);
 }
