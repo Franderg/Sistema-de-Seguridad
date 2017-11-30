@@ -29,6 +29,8 @@ boolean preultrasonic=false;
 boolean servo = false;
 int estado = 0;
 int preestado = 0;
+int pos = 0;
+int busca = 0;
 
 void setup() {
  BT.begin(9600);
@@ -45,8 +47,9 @@ void setup() {
 }
 
 void pir(){
+  val = 0;
   ultrasonic = false;
-  delay(1000);
+  delay(300);
   val2 = digitalRead(pirPin);
   if (val2 == HIGH) {            // check if the input is HIGH
     if (pirState == LOW) {
@@ -56,12 +59,9 @@ void pir(){
         estado = 2;
         BT.write(2);
       }
-      Serial.print("preestado");
-      Serial.println(preestado);
-      Serial.print("estado");
-      Serial.println(estado);
       Serial.println("Movimiento detectado");
       }
+      preultrasonic=ultrasonic;
       // We only want to print on the output change, not state
       pirState = HIGH;
     
@@ -109,37 +109,43 @@ void loop() {
    digitalWrite(trigPin, LOW);
    duration = pulseIn(echoPin, HIGH);
    //Calculate the distance (in cm) based on the speed of sound.
-   delay(1000);
+   delay(400);
    distance = (duration/2) / 29.1;
    Serial.println(distance);
    if (distance >= 30 || distance <= 10){
      preestado = 0;
      estado = 1;
+     BT.write(1);
+     preestado = 1;
      pir();
    }
  }
  
  if (estado == 1){
-   if(servo){
-     for (int i = 0; i <= 120; i = i+60){
-       myservo.write(i);
+   if(servo == true && busca <= 2){
+     for (pos = 0; pos <= 120; pos += 60){
+       myservo.write(pos);
        delay(1000);
        val = 0;
        pir();     
      }
-      for (int i = 120; i <= 0; i = i-60){
-       myservo.write(i);
+      for (pos = 120; pos >= 0; pos -= 60){
+       myservo.write(pos);
        delay(1000);
        pir();    
      }
-     myservo.write(0);
-     delay(100);
    }
-   val = digitalRead(pirPin);  // read input value
+   busca +=1;
  }
  
- //PIR
+ if(busca > 160){
+   preestado = estado;
+   estado = 0;
+ }
   
+ //PIR
+ delay(90);
+  val = digitalRead(pirPin);  // read input value
   if (val == HIGH) {            // check if the input is HIGH
     if (pirState == LOW) {
       // we have just turned on
@@ -148,10 +154,6 @@ void loop() {
         estado = 2;
         BT.write(2);
       }
-      Serial.print("preestado loop");
-      Serial.println(preestado);
-      Serial.print("estado loop");
-      Serial.println(estado);
       Serial.println("Movimiento detectado loop");
       if(estado==0){
         preestado = 0;
@@ -177,7 +179,8 @@ void loop() {
       BT.write(3); 
       Serial.println("Alerta Verde");
       preestado=0;
-      ultrasonic = preultrasonic;
+      busca = 0;
+      ultrasonic = true;
     }
     if ((estado==1) && (estado!=preestado)){
       BT.write(1); 
@@ -190,5 +193,6 @@ void loop() {
       preestado=2;
       delay(8000);
       estado=0;
+      ultrasonic = preultrasonic;
     }
 }
