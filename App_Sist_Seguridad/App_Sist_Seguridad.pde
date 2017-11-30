@@ -12,7 +12,7 @@ PImage img3,img4,img5;
 PImage img10,img11;                                  //Se instancian las imagenes que se ocuparan para la interfaz
 String curr_time,curr_date,filename,row_data;        //Se instancian los strings necesarios para la fecha, hora y el archivo de texto.
 int inString;
-int valueAlert =3;                                        //Variable de entrada
+int valueAlert =3;                                   //Variable de entrada
 PrintWriter output;                                  //Variable para escritura de log.
 PFont font;                                          //Variable predeterminada de la interfaz
 boolean archivo = false;                             // Booleano exclusivo para crear el archivo que servira de registro en la aplicación
@@ -125,10 +125,11 @@ void draw(){
   
   inString = port.read();
   if(inString!=-1) println(inString);
-  if(inString==4 ||inString==52){
-         javax.swing.JOptionPane.showMessageDialog ( null,"Conexion exitosa","Estado de la Conexion", javax.swing.JOptionPane.INFORMATION_MESSAGE  );
-       }
-  
+  if(inString==4 ||inString==52) javax.swing.JOptionPane.showMessageDialog ( null,"Conexion exitosa","Estado de la Conexion", javax.swing.JOptionPane.INFORMATION_MESSAGE  );
+  if (inString==5 ||inString==53) sensor1=true;
+  if (inString==6 ||inString==54) sensor1=false;
+  if (inString==7 ||inString==55) sensor2=true;
+  if (inString==8 ||inString==56) sensor2=false;
   if (inString ==1 || inString == 49){          //Si el mensaje de alerta es amarillo
     valueAlert =1;
     image(img4,175,125);
@@ -142,7 +143,8 @@ void draw(){
       row_data = curr_date + "  " + curr_time + "Alerta roja";           //Se arma el string que se guardara en el archivo de texto.
       output.println(row_data);
       output.flush();//Se graba el contenido en el archivo ".txt"
-    }else if (inString ==3 || inString == 51){
+    }else 
+      if (inString ==3 || inString == 51){
       valueAlert =3;
       image(img5,175,125);                                      //Si el mensaje de Alerta es verde 
     }else

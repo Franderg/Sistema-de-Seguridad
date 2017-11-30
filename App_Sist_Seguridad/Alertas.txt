@@ -1,9 +1,3 @@
 Fechas de monitoreo
 
 MM    DD    YYYY    HH    MM  SS
-29 - 11 - 2017  19 : 23 : 46Alerta amarilla
-29 - 11 - 2017  19 : 23 : 47Alerta roja
-29 - 11 - 2017  19 : 23 : 48Alerta amarilla
-29 - 11 - 2017  19 : 23 : 48Alerta roja
-29 - 11 - 2017  19 : 23 : 49Alerta amarilla
-29 - 11 - 2017  19 : 23 : 49Alerta roja
